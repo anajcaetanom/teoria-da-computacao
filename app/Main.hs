@@ -4,9 +4,10 @@
 
 import GHC.Generics (Generic)
 import Data.Yaml (FromJSON, ToJSON, parseJSON, decodeFileEither, encodeFile, ParseException)
-import Data.Aeson (Value(..), withObject, (.:))
-import qualified Data.Vector as V
+import Data.Aeson (Value(..), withObject, (.:), withArray)
+import Data.Aeson.Types (Parser)
 import qualified Data.Text as T
+import qualified Data.Vector as V
 
 data Transition = Transition {
     from    :: T.Text,
@@ -24,12 +25,14 @@ data Automata = Automata {
 } deriving (Show, Generic)
 
 
-
+parseAlphabet :: Value -> Parser [T.Text]
+parseAlphabet = withArray "alphabet" $ \arr ->
+    mapM parseTextOrNumber (V.toList arr)
 instance FromJSON Automata where
     parseJSON = withObject "Automata" $ \campo ->
         Automata
             <$> campo .: "type"
-            <*> campo .: "alphabet"
+            <*> (campo .: "alphabet" >>= parseAlphabet)
             <*> campo .: "states"
             <*> campo .: "initial_state"
             <*> campo .: "final_states"
@@ -39,11 +42,16 @@ instance FromJSON Transition where
     parseJSON = withObject "Transition" $ \campo ->
         Transition
             <$> campo .: "from"
-            <*> campo .: "symbol" 
+            <*> (campo .: "symbol" >>= parseTextOrNumber)
             <*> campo .: "to"
 
 -- funções auxiliares
 
+parseTextOrNumber :: Value -> Parser T.Text
+parseTextOrNumber (String s) = pure s
+parseTextOrNumber (Number n) = pure (T.pack (show n))
+parseTextOrNumber _ = fail "esperado string ou number"
+        
 
 -- TODO: código de conversão NFAɛ → NFA
 
