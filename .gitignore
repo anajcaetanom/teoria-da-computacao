@@ -1,0 +1,33 @@
+# Build outputs
+dist/
+dist-newstyle/
+*.hi
+*.o
+*.dyn_o
+*.dyn_hi
+
+# Cabal
+cabal.project.local
+cabal.sandbox.config
+
+# GHC environment
+.ghc.environment.*
+
+# Stack (caso use depois)
+.stack-work/
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*~
