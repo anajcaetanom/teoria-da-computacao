@@ -67,7 +67,11 @@ executable lab1
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.3.0, yaml, aeson, vector, text
+    build-depends:    
+        base ^>=4.18.3.0, 
+        yaml, aeson, vector, 
+        text, containers,
+        scientific
 
 
     -- Directories containing source files.
