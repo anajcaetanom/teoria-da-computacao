@@ -61,7 +61,14 @@ executable lab1
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules: Conversions.NfaeToNfa, Conversions.NfaToDfa, Render, Types
+    other-modules: 
+        Conversions.NfaeToNfa, 
+        Conversions.NfaToDfa, 
+        Render, 
+        Types,
+        Regex.RegexToNfae,
+        Regex.Types,
+        Regex.Parser
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
